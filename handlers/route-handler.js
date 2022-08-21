@@ -1,10 +1,33 @@
-var express = require('express'),
-    router = express.Router();
+let SportsService = require('../services/sports-service');
 
+class routeHandler {
+    constructor () {
+        this.sportsService = new SportsService();
+    }
 
-router
-    .get('/', (req, res) => {
-        res.send('Hello Auction World!!!');
-    })
+    async addSport(req, res) {
+        const me = this;
+        try {
+            let payload = req.body;
+            let result = await me.sportsService.addSport(payload);
+            return result;
+        } catch (err) {
+            return err;
+        }
+    }
 
-module.exports = router;
+    async getSportByName (req, res) {
+        const me = this;
+        try {
+            let {name} = req.params;
+            let result = await me.sportsService.getSportByName(name);
+            return result;
+        } catch (err) {
+            return err;
+        }
+    }
+
+}
+
+let RouteHandler = new routeHandler();
+module.exports = RouteHandler;
